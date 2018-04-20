@@ -61,12 +61,72 @@ class FinalProject693:
     def lcom4(self):
 
         python_file = open("SampleIncludingAll1.py", 'r')
+        tree = ast.parse(python_file.read())
 
-        tree = ast.parse(python_file)
-        print(tree)
-        exec(compile(tree, filename="<ast>", mode="exec"))
+        myDict = {}
+        classNames = []
+        temp = []
+        defNames = []
 
-    # def cbo(self):
+        for n in ast.walk(tree):
+
+            # Finds the Classes
+            if isinstance(n, ast.ClassDef):
+                myDict[n.name] = {}
+
+                for x in n.body:
+
+                    if isinstance(x, ast.FunctionDef):
+                        if x.name != "__init__":
+                            myDict[n.name][x.name] = []
+
+
+        print(myDict)
+            # Finds Def
+            # if isinstance(n, ast.FunctionDef):
+               # if n.name != "__init__":
+                   # defNames.append(n.name)
+
+            # Put Defs inside the Classes
+            # for x in classNames:
+
+               # for secondWalk in ast.walk(tree):
+                   # if isinstance(secondWalk, ast.FunctionDef):
+                       # if secondWalk.name != "__init__" and x == secondWalk:
+                           # print(secondWalk.name)
+
+       # print(classNames)
+       # print(defNames)
+
+
+
+
+    def cbo(self):
+
+        python_file = open("SampleIncludingAll1.py", 'r')
+        tree = ast.parse(python_file.read())
+
+        classNames = []
+        defNames = []
+
+        for n in ast.walk(tree):
+
+            # Finds the Classes
+            if isinstance(n, ast.ClassDef):
+                classNames.append(n.name)
+
+            # Finds Def
+            if isinstance(n, ast.FunctionDef):
+                if n.name != "__init__":
+                    defNames.append(n.name)
+
+            # Find a Class in the Def
+            if isinstance(n, ast.Name):
+                print(n.id)
+
+        print(classNames)
+
+
 
     def dit(self):
 
@@ -128,10 +188,12 @@ class FinalProject693:
         # Arrays for counting
         classNames = []
         parenthesisNames = []
+        tempArray = []
 
         # Class Names
         classCounter = 0
         classFirstPara = 0
+        temp = 0
 
         # Inside parenthesis variables
         testCounter = 0
@@ -182,16 +244,22 @@ class FinalProject693:
             currentLine = next(python_file, None)
 
         # Counts the children
+        tempCounter = 0
         for c in parenthesisNames:
+            tempCounter += 1
             if parenthesisNames.count(c) > 0:
                 if c == "object":
-                    parenthesisNames.pop(c)
-                name = c
-                number = parenthesisNames.count(c)
-                print(name, " ", number)
+                    parenthesisNames.pop(tempCounter - 1)
+                if c != "object":
+                    name = c
+                    number = parenthesisNames.count(c)
+                    tempArray.append(name)
+                    print(name, " ", number)
 
         for q in classNames:
-            if q != name:
+            if tempArray.count(q) > 0:
+                temp += 1
+            else:
                 print(q, " 0")
 
     def wmc(self):
@@ -234,8 +302,9 @@ class FinalProject693:
         print("Number of Methods: ", methodCounter, "\n ---------- ")
 
 f = FinalProject693()
-# f.lcom4()
+f.lcom4()
+# f.cbo()
 # f.getlinesofcode()
 # f.dit()
-f.noc()
+# f.noc()
 # f.wmc()
