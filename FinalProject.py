@@ -1,5 +1,12 @@
 import ast
 
+class AttributeFinder(ast.NodeVisitor):
+
+    def __init__(self):
+        self.getAttribute = ""
+
+    def visit_Attribute(self, currentNode):
+        self.getAttribute = currentNode.attr
 
 class FinalProject693:
 
@@ -64,40 +71,30 @@ class FinalProject693:
         tree = ast.parse(python_file.read())
 
         myDict = {}
-        classNames = []
-        temp = []
-        defNames = []
 
+        # Walks through the tree
         for n in ast.walk(tree):
 
             # Finds the Classes
             if isinstance(n, ast.ClassDef):
                 myDict[n.name] = {}
 
+                # Finds the Defs
                 for x in n.body:
 
                     if isinstance(x, ast.FunctionDef):
                         if x.name != "__init__":
                             myDict[n.name][x.name] = []
 
-
+                        # Finds the attributes
+                        for y in x.body:
+                            findAttribute = AttributeFinder()
+                            findAttribute.visit(y)
+                            temp = findAttribute.getAttribute
+                            if temp != "":
+                                print(temp)
+                               # myDict[n.name][x.name].append(temp)
         print(myDict)
-            # Finds Def
-            # if isinstance(n, ast.FunctionDef):
-               # if n.name != "__init__":
-                   # defNames.append(n.name)
-
-            # Put Defs inside the Classes
-            # for x in classNames:
-
-               # for secondWalk in ast.walk(tree):
-                   # if isinstance(secondWalk, ast.FunctionDef):
-                       # if secondWalk.name != "__init__" and x == secondWalk:
-                           # print(secondWalk.name)
-
-       # print(classNames)
-       # print(defNames)
-
 
 
 
