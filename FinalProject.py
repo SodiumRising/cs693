@@ -149,7 +149,7 @@ class FinalProject693:
 
         objectUsrInpt = input("Do you want to include the object? (y/n)   ")
 
-        print("\n--Depth of Inheritance Tree--\n")
+        print("\n-----Depth of Inheritance Tree-----\n")
 
         # Arrays for counting
         classNames = []
@@ -167,9 +167,16 @@ class FinalProject693:
             if removedBlanks.startswith("class"):
 
                 # Gets info inside parenthesis
+                location = 0
                 for n in removedBlanks:
+                    location += 1
                     if n == "(":
-                        classNames.append(removedBlanks)
+                        currentPosition = location
+                        if removedBlanks[currentPosition:currentPosition + 1] != ")":
+                            # print(removedBlanks)
+                            classNames.append(removedBlanks)
+                        else:
+                            noDitNames.append(removedBlanks[:currentPosition - 1])
 
                 if removedBlanks.find("(") == -1:
                     noDitNames.append(removedBlanks)
@@ -177,14 +184,18 @@ class FinalProject693:
             currentLine = next(python_file, None)
 
         # Find the Depth
+        print(classNames)
         for c in classNames:
             ditCount += 1
 
             # Object Constructor
             if c.find("object") != -1:
                 ditCount += 1
+
+                # Removes Object if user does not want
                 if objectUsrInpt == "n":
                     ditCount -= 1
+
             print(c[6:], " ", ditCount)
             ditCount = 0
 
@@ -334,6 +345,6 @@ for x in filesList:
         # f.getlinesofcode(y)
         # f.lcom4(y)
         # f.cbo(y)
-        # f.dit(y)
-        f.noc(y)
+        f.dit(y)
+        # f.noc(y)
         # f.wmc(y)
