@@ -94,10 +94,19 @@ class FinalProject693:
 
         # Find LCOM
         lcom = 0
+
         for x in myDict:
-            temp = myDict.get(x)
-            if temp != {}:
-                print(temp)
+           # print(x)
+            defNames = myDict.get(x)
+
+            if defNames != {}:
+                print(defNames, "Def")
+
+                for y in defNames:
+                    values = defNames.get(y)
+                    print(values)
+            else:
+                print(x, " = ", 0)
 
 
 
