@@ -261,14 +261,11 @@ class FinalProject693:
         tempCounter = 0
         for c in parenthesisNames:
             tempCounter += 1
-            if parenthesisNames.count(c) > 0:
-                if c == "object":
-                    parenthesisNames.pop(tempCounter - 1)
-                if c != "object":
-                    name = c
-                    number = parenthesisNames.count(c)
-                    tempArray.append(name)
-                    print(name, " ", number)
+            if parenthesisNames.count(c) > 0 and c != "object":
+                name = c
+                number = parenthesisNames.count(c)
+                tempArray.append(name)
+                print(name, " ", number)
 
         for q in classNames:
             if tempArray.count(q) > 0:
@@ -330,7 +327,7 @@ f = FinalProject693()
 filesList = []
 fileToLoad = input("What is the name of the file(s) you would like to use?  Please separate them by a space. ")
 filesList.append(fileToLoad.split())
-print(filesList)
+
 for x in filesList:
     for y in x:
         print("\n--------", y, "--------\n")

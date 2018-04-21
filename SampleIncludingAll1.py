@@ -93,7 +93,7 @@ class DepthOfInheritanceExample4(DepthOfInheritanceExample3):
     def __init__(self):
         pass
 
-class NumberOfChildrenExample1:
+class NumberOfChildrenExample1():
 
     def __init__(self):
         pass
