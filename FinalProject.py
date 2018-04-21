@@ -1,13 +1,5 @@
 import ast
 
-class AttributeFinder(ast.NodeVisitor):
-
-    def __init__(self):
-        self.getAttribute = ""
-
-    def visit_Attribute(self, currentNode):
-        self.getAttribute = currentNode.attr
-
 class FinalProject693:
 
     def __init__(self):
@@ -70,7 +62,10 @@ class FinalProject693:
         python_file = open("SampleIncludingAll1.py", 'r')
         tree = ast.parse(python_file.read())
 
+        print("\n------ LCOM -------\n")
+
         myDict = {}
+        attributeList = []
 
         # Walks through the tree
         for n in ast.walk(tree):
@@ -91,10 +86,18 @@ class FinalProject693:
                             findAttribute = AttributeFinder()
                             findAttribute.visit(y)
                             temp = findAttribute.getAttribute
-                            if temp != "":
-                                print(temp)
-                               # myDict[n.name][x.name].append(temp)
+
+                            # No empty attr
+                            if temp != "" and x.name != "__init__":
+                                myDict[n.name][x.name].append(findAttribute.getAttribute)
         print(myDict)
+
+        # Find LCOM
+        lcom = 0
+        for x in myDict:
+            temp = myDict.get(x)
+            if temp != {}:
+                print(temp)
 
 
 
@@ -297,6 +300,15 @@ class FinalProject693:
         if constructorUsrInpt == "n":
             methodCounter -= 1
         print("Number of Methods: ", methodCounter, "\n ---------- ")
+
+class AttributeFinder(ast.NodeVisitor):
+
+    def __init__(self):
+        self.getAttribute = ""
+
+    def visit_Attribute(self, currentNode):
+        self.getAttribute = currentNode.attr
+
 
 f = FinalProject693()
 f.lcom4()
