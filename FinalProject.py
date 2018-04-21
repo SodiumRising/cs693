@@ -94,17 +94,20 @@ class FinalProject693:
 
         # Find LCOM
         lcom = 0
+        attributesFound = []
 
         for x in myDict:
-           # print(x)
             defNames = myDict.get(x)
 
             if defNames != {}:
-                print(defNames, "Def")
 
                 for y in defNames:
                     values = defNames.get(y)
-                    print(values)
+                    if
+                    attributesFound.append(values)
+                    lcom += 1
+                    print(attributesFound)
+                    # print(values)
             else:
                 print(x, " = ", 0)
 
@@ -114,6 +117,8 @@ class FinalProject693:
 
         python_file = open("SampleIncludingAll1.py", 'r')
         tree = ast.parse(python_file.read())
+
+        print("\n ------CBO------\n")
 
         classNames = []
         defNames = []
