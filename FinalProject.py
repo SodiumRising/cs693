@@ -5,7 +5,7 @@ class FinalProject693:
     def __init__(self):
         return
 
-    def getlinesofcode(self):
+    def getlinesofcode(self, file):
 
         linesOfCode = 0
         counter = 0
@@ -16,7 +16,7 @@ class FinalProject693:
         importUsrInpt = input("Do you want to exclude import statements? (y/n)  ")
         print("\n")
 
-        python_file = open("SampleIncludingAll1.py", 'r')
+        python_file = open(file, 'r')
         currentLine = next(python_file)
 
         while currentLine:
@@ -57,9 +57,9 @@ class FinalProject693:
         print(linesOfCode)
         print("\n")
 
-    def lcom4(self):
+    def lcom4(self, file):
 
-        python_file = open("SampleIncludingAll1.py", 'r')
+        python_file = open(file, 'r')
         tree = ast.parse(python_file.read())
 
         print("\n------ LCOM -------\n")
@@ -103,7 +103,7 @@ class FinalProject693:
 
                 for y in defNames:
                     values = defNames.get(y)
-                    if
+                    # if
                     attributesFound.append(values)
                     lcom += 1
                     print(attributesFound)
@@ -113,9 +113,9 @@ class FinalProject693:
 
 
 
-    def cbo(self):
+    def cbo(self, file):
 
-        python_file = open("SampleIncludingAll1.py", 'r')
+        python_file = open(file, 'r')
         tree = ast.parse(python_file.read())
 
         print("\n ------CBO------\n")
@@ -142,9 +142,9 @@ class FinalProject693:
 
 
 
-    def dit(self):
+    def dit(self, file):
 
-        python_file = open("SampleIncludingAll1.py", 'r')
+        python_file = open(file, 'r')
         currentLine = next(python_file)
 
         objectUsrInpt = input("Do you want to include the object? (y/n)   ")
@@ -192,12 +192,12 @@ class FinalProject693:
         for y in noDitNames:
             print(y[6:], " ", "0")
 
-    def noc(self):
+    def noc(self, file):
 
-        python_file = open("SampleIncludingAll1.py", 'r')
+        python_file = open(file, 'r')
         currentLine = next(python_file)
 
-        print("\n--Number of Children--\n")
+        print("\n-----Number of Children-----\n")
 
         # Arrays for counting
         classNames = []
@@ -276,12 +276,12 @@ class FinalProject693:
             else:
                 print(q, " 0")
 
-    def wmc(self):
+    def wmc(self, file):
 
         methodCounter = 0
         printCounter = 0
 
-        python_file = open("SampleIncludingAll1.py", 'r')
+        python_file = open(file, 'r')
         currentLine = next(python_file)
 
         print("\n")
@@ -324,10 +324,19 @@ class AttributeFinder(ast.NodeVisitor):
         self.getAttribute = currentNode.attr
 
 
+
 f = FinalProject693()
-f.lcom4()
-# f.cbo()
-# f.getlinesofcode()
-# f.dit()
-# f.noc()
-# f.wmc()
+
+filesList = []
+fileToLoad = input("What is the name of the file(s) you would like to use?  Please separate them by a space. ")
+filesList.append(fileToLoad.split())
+print(filesList)
+for x in filesList:
+    for y in x:
+        print("\n--------", y, "--------\n")
+        # f.getlinesofcode(y)
+        # f.lcom4(y)
+        # f.cbo(y)
+        # f.dit(y)
+        f.noc(y)
+        # f.wmc(y)
