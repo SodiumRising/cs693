@@ -65,7 +65,6 @@ class FinalProject693:
         print("\n------ LCOM -------\n")
 
         myDict = {}
-        attributeList = []
 
         # Walks through the tree
         for n in ast.walk(tree):
@@ -92,33 +91,46 @@ class FinalProject693:
                                 myDict[n.name][x.name].append(findAttribute.getAttribute)
 
         # Find LCOM
+
+        # Find the Def Names
         for x in myDict:
             defNames = myDict.get(x)
 
+            # If the names are not Null
             if defNames != {}:
+
+                # Master List, see if things are connected
                 l = []
-                for key in defNames:  # same as in keys
-                    l.append([key])  # at the end of 2d list
+                for key in defNames:  # same as in defName.keys()
+                    l.append([key])  # Adding Method names
                     for var in defNames.get(key):
-                        l[-1].append(var)
+                        l[-1].append(var)  # Finds the values which are variables and/or the method calls
 
                 # Now attach the lists
-                # I guess try again??
+                # Had to go through the while twice, because it ended with 2 lists when there were the same elements in both lists
                 t = 0
                 while t < 2:
+                    # Take the first element in the list
                     for onedl in l:
+                        # Iterate through that element, for each of the names
                         for e in onedl:
+                            # Building a list with a range the size of the Master List, because some elements will be removed later (index error)
                             indecies = list(range(len(l)))
+                            # Iterating through the Index list
                             for i in indecies:
-                                if l[i] != onedl:  # As in, it's another 1dl
+                                # Checking to see if not the same
+                                if l[i] != onedl:
+                                    # If the element exists, combine the lists
                                     if e in l[i]:
                                         l[i] += onedl
                                         indecies.pop(-1)
+                                        # If there are two of the same elements in a list, it will try to remove that element twice
                                         try:
                                             l.remove(onedl)
                                         except ValueError:
                                             pass
                     t += 1
+                # If there is only one value in the list, if yes empty it
                 if len(l[0]) < 2:
                     l = []
                 print(x, " = ", len(l))
@@ -132,25 +144,21 @@ class FinalProject693:
 
         print("\n ------CBO------\n")
 
-        classNames = []
-        defNames = []
+        myDict = {}
 
+        # Walks through the tree
         for n in ast.walk(tree):
 
             # Finds the Classes
             if isinstance(n, ast.ClassDef):
-                classNames.append(n.name)
+                myDict[n.name] = {}
 
-            # Finds Def
-            if isinstance(n, ast.FunctionDef):
-                if n.name != "__init__":
-                    defNames.append(n.name)
+                # Finds the Defs
+                for x in n.body:
 
-            # Find a Class in the Def
-            if isinstance(n, ast.Name):
-                print(n.id)
-
-        print(classNames)
+                    if isinstance(x, ast.FunctionDef):
+                        if x.name != "__init__":
+                            myDict[n.name][x.name] = []
 
     def dit(self, file):
 
