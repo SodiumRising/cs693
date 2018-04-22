@@ -1,4 +1,7 @@
 import ast
+import codegen
+
+# SampleIncludingAll1.py
 
 class FinalProject693:
 
@@ -144,7 +147,9 @@ class FinalProject693:
 
         print("\n ------CBO------\n")
 
+
         myDict = {}
+        cbo = 0
 
         # Walks through the tree
         for n in ast.walk(tree):
@@ -159,6 +164,18 @@ class FinalProject693:
                     if isinstance(x, ast.FunctionDef):
                         if x.name != "__init__":
                             myDict[n.name][x.name] = []
+
+            for classTree in ast.walk(n):
+                if isinstance(classTree, ast.ClassDef):
+                    print("Current Class: ", classTree.name)
+                if isinstance(classTree, ast.Name):
+                    if classTree.id != "self" and classTree.id != "res" and classTree.id != "result" and classTree.id != "temp" and classTree.id != "object":
+                        temp = classTree.id
+                        print(temp)
+
+
+
+        print(myDict)
 
     def dit(self, file):
 
@@ -360,8 +377,8 @@ for x in filesList:
     for y in x:
         print("\n--------", y, "--------\n")
         # f.getlinesofcode(y)
-        f.lcom4(y)
-        # f.cbo(y)
+        # f.lcom4(y)
+        f.cbo(y)
         # f.dit(y)
         # f.noc(y)
         # f.wmc(y)
