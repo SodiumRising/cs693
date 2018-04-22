@@ -90,28 +90,40 @@ class FinalProject693:
                             # No empty attr
                             if temp != "" and x.name != "__init__":
                                 myDict[n.name][x.name].append(findAttribute.getAttribute)
-        print(myDict)
 
         # Find LCOM
-        lcom = 0
-        attributesFound = []
-
         for x in myDict:
             defNames = myDict.get(x)
 
             if defNames != {}:
+                l = []
+                for key in defNames:  # same as in keys
+                    l.append([key])  # at the end of 2d list
+                    for var in defNames.get(key):
+                        l[-1].append(var)
 
-                for y in defNames:
-                    values = defNames.get(y)
-                    # if
-                    attributesFound.append(values)
-                    lcom += 1
-                    print(attributesFound)
-                    # print(values)
+                # Now attach the lists
+                # I guess try again??
+                t = 0
+                while t < 2:
+                    for onedl in l:
+                        for e in onedl:
+                            indecies = list(range(len(l)))
+                            for i in indecies:
+                                if l[i] != onedl:  # As in, it's another 1dl
+                                    if e in l[i]:
+                                        l[i] += onedl
+                                        indecies.pop(-1)
+                                        try:
+                                            l.remove(onedl)
+                                        except ValueError:
+                                            pass
+                    t += 1
+                if len(l[0]) < 2:
+                    l = []
+                print(x, " = ", len(l))
             else:
                 print(x, " = ", 0)
-
-
 
     def cbo(self, file):
 
@@ -139,8 +151,6 @@ class FinalProject693:
                 print(n.id)
 
         print(classNames)
-
-
 
     def dit(self, file):
 
@@ -331,8 +341,6 @@ class AttributeFinder(ast.NodeVisitor):
     def visit_Attribute(self, currentNode):
         self.getAttribute = currentNode.attr
 
-
-
 f = FinalProject693()
 
 filesList = []
@@ -344,8 +352,8 @@ for x in filesList:
     for y in x:
         print("\n--------", y, "--------\n")
         # f.getlinesofcode(y)
-        # f.lcom4(y)
+        f.lcom4(y)
         # f.cbo(y)
-        f.dit(y)
+        # f.dit(y)
         # f.noc(y)
         # f.wmc(y)
