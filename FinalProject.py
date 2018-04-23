@@ -1,5 +1,5 @@
 import ast
-import codegen
+import itertools
 
 # SampleIncludingAll1.py
 
@@ -147,35 +147,33 @@ class FinalProject693:
 
         print("\n ------CBO------\n")
 
-
         myDict = {}
-        cbo = 0
 
         # Walks through the tree
         for n in ast.walk(tree):
-
             # Finds the Classes
             if isinstance(n, ast.ClassDef):
                 myDict[n.name] = {}
-
                 # Finds the Defs
-                for x in n.body:
+                for classTree in ast.walk(n):
+                    if isinstance(classTree, ast.FunctionDef):
+                        myDict[n.name][classTree.name] = []
+                        for call in ast.walk(classTree):
+                            if isinstance(call, ast.Call):
+                                for func in ast.walk(call):
+                                    try:
+                                        if func.id != "self":
+                                            myDict[n.name][classTree.name].append(func.id)
+                                    except AttributeError:
+                                        pass
 
-                    if isinstance(x, ast.FunctionDef):
-                        if x.name != "__init__":
-                            myDict[n.name][x.name] = []
-
-            for classTree in ast.walk(n):
-                if isinstance(classTree, ast.ClassDef):
-                    print("Current Class: ", classTree.name)
-                if isinstance(classTree, ast.Name):
-                    if classTree.id != "self" and classTree.id != "res" and classTree.id != "result" and classTree.id != "temp" and classTree.id != "object":
-                        temp = classTree.id
-                        print(temp)
-
-
-
-        print(myDict)
+        # Find cbo
+        for comb in list(itertools.combinations(myDict, 2)):
+            x = comb[0]
+            y = comb[1]
+            cbo = list(myDict[x].values()).count([y]) + \
+                  list(myDict[y].values()).count([x])
+            print(x, ' <-> ', y, ' = ', cbo)
 
     def dit(self, file):
 
@@ -219,7 +217,7 @@ class FinalProject693:
             currentLine = next(python_file, None)
 
         # Find the Depth
-        print(classNames)
+
         for c in classNames:
             ditCount += 1
 
@@ -368,17 +366,15 @@ class AttributeFinder(ast.NodeVisitor):
 
 f = FinalProject693()
 
-filesList = []
 fileToLoad = input("What is the name of the file(s) you would like to use?  Please separate them by a space. ")
-filesList.append(fileToLoad.split())
+filesList = fileToLoad.split()
 
 # For Multiple Files
-for x in filesList:
-    for y in x:
-        print("\n--------", y, "--------\n")
-        # f.getlinesofcode(y)
-        # f.lcom4(y)
-        f.cbo(y)
-        # f.dit(y)
-        # f.noc(y)
-        # f.wmc(y)
+for y in filesList:
+    print("\n--------", y, "--------\n")
+    f.getlinesofcode(y)
+    f.lcom4(y)
+    f.cbo(y)
+    f.dit(y)
+    f.noc(y)
+    f.wmc(y)
