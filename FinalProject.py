@@ -158,8 +158,11 @@ class FinalProject693:
                 for classTree in ast.walk(n):
                     if isinstance(classTree, ast.FunctionDef):
                         myDict[n.name][classTree.name] = []
+
+                        # Find the Function calls based on the AST Class which is before the name.id in the AST
                         for call in ast.walk(classTree):
                             if isinstance(call, ast.Call):
+                                # If a call is found and it is not self, add it to dictionary
                                 for func in ast.walk(call):
                                     try:
                                         if func.id != "self":
@@ -167,13 +170,14 @@ class FinalProject693:
                                     except AttributeError:
                                         pass
 
-        # Find cbo
+        # Find CBO
         for comb in list(itertools.combinations(myDict, 2)):
             x = comb[0]
             y = comb[1]
             cbo = list(myDict[x].values()).count([y]) + \
                   list(myDict[y].values()).count([x])
             print(x, ' <-> ', y, ' = ', cbo)
+        print("\n")
 
     def dit(self, file):
 
